@@ -1,0 +1,221 @@
+relationen
+<table width="100%"><tr><td class='thead'><h1>Beziehungskiste</h1></td></tr>
+	<tr><td class="trow1">
+	<div style="text-align: center;">	<a href="misc.php?action=relationen">Zur Relationsverwaltung</a></div>
+{$relationen_formular}
+</td></tr>
+<tr><td>
+	{$relationen_bit_profil}
+	</td></tr>
+</table>
+
+____________________________________
+relationen_alert
+
+<div class="pm_alert">
+  Du hast aktuell  <strong>{$count} {$anfrage}</strong> offen. <b><a href="misc.php?action=relationen">Hier</a></b> kannst du sie bearbeiten.
+</div>
+<br />
+____________________________________
+relationen_anfragen
+
+<html>
+<head>
+<title>{$mybb->settings['bbname']} - Deine Relationsanfragen</title>
+{$headerinclude}
+</head>
+<body>
+{$header}
+<table border="0" cellspacing="{$theme['borderwidth']}" cellpadding="{$theme['tablespace']}" class="tborder">
+<tr>
+<td class="thead"><h2>Deine Relationsanfragen</h2></td>
+</tr>
+<tr>
+<td class="trow1" align="center">
+<table width="100%">
+	<tr class="thead"><td width="33%"><h2>Anfrager</h2></td><td width="33%"><h2>Eintrag</h2></td><td width="33%"><h2>Optionen</h2></td></tr>
+	{$anfragen_bit}
+	</table>
+	
+	<table width="100%">
+	<tr class="thead"><td width="33%"><h2>Angefragt bei</h2></td><td width="33%"><h2>Eintrag</h2></td><td width="33%"><h2>Optionen</h2></td></tr>
+	{$deine_anfragen}
+	</table>
+</td>
+</tr>
+</table>
+{$footer}
+</body>
+</html>
+
+____________________________________
+relationen_anfragen_bit
+<tr><td class='trow1' align="center">&raquo;{$user}</td><td class='trow1'>&raquo; Anfrage: <b>{$row['art']}</b><br />
+	&raquo; Kategorie: <b>{$row['kat']}</b></td><td class='trow1'>{$optionen}</td></tr>
+
+____________________________________
+relationen_bit_profil
+
+		<div class="relas">
+<table width='100%'>
+	<tr><td class='thead' colspan="3"><h2>Familie</h2></td></tr>
+	<tr><td><div class='relation'><table>
+		{$familie}</table>
+		</div></td></tr>
+	</table>
+</div>
+<div class="relas">
+<table width='100%'>
+	<tr><td class='thead' colspan="3"><h2>Freunde</h2></td></tr>
+	<tr><td><div class='relation'><table>
+		{$freunde}</table>
+		</div></td></tr>
+	</table>
+</div>
+<div class="relas">
+<table width='100%'>
+	<tr><td class='thead' colspan="3"><h2>Bekannte</h2></td></tr>
+		<tr><td><div class='relation'><table>
+		{$bekannte}</table>
+		</div></td></tr>
+	</table>
+</div>
+<div class="relas">
+<table width='100%'>
+	<tr><td class='thead' colspan="3"><h2>Liebe</h2></td></tr>
+	<tr><td><div class='relation'><table>
+		{$liebe}</table>
+		</div></td></tr>
+	</table>
+</div>
+
+<div class="relas">
+<table width='100%'>
+	<tr><td class='thead' colspan="3"><h2>Feinde</h2></td></tr>
+	<tr><td><div class='relation'><table>
+		{$feinde}</table>
+		</div></td></tr>
+	</table>
+</div>
+<div class="relas">
+<table width='100%'>
+	<tr><td class='thead' colspan="3"><h2>Vergangenheit</h2></td></tr>
+	<tr><td><div class='relation'><table>
+		{$vergangen}</table>
+		</div></td></tr>
+	</table>
+</div>
+____________________________________
+relationen_bit_profil_edit
+
+<style>.infopop { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: hsla(0, 0%, 0%, 0.5); z-index: 1; opacity:0; -webkit-transition: .5s ease-in-out; -moz-transition: .5s ease-in-out; transition: .5s ease-in-out; pointer-events: none; } .infopop:target { opacity:1; pointer-events: auto; } .infopop > .pop { background: #242424; width: 300px; position: relative; margin: 10% auto; padding: 25px; z-index: 3; } .closepop { position: absolute; right: -5px; top:-5px; width: 100%; height: 100%; z-index: 2; }</style>
+<div id="popinfo$row[rid]" class="infopop">
+  <div class="pop"><form method="post" action=""><input type='hidden' value='{$row['rid']}' name='getrid'><input type='hidden' value='{$row['anfrager']}' name='anfrager'> <input type='hidden' value='{$row['angefragte']}' name='angefragte'>
+<table border="0" cellspacing="5" cellpadding="{$theme['tablespace']}" class="tborder" style="width: 50%; margin:auto;">
+	<tr><td class='trow1' align='center' colspan='2'>Editieren für {$row['username']}</td></tr>
+	<tr><td class='trow1'><strong>Relation</strong></td>
+			<td class='trow1'><select name="kat">
+			<option value="{$row['kat']}">{$row['kat']}</option>
+				<option value="familie">Familie</option>
+		<option value="freunde">Freunde</option>
+			<option value="bekannte">Bekannte</option>
+	<option value="liebe">Liebe</option>
+<option value="feinde">Feinde</option>
+		<option value="vergangen">Vergangenheit</option>
+			</select></td></tr>
+		<tr><td class='trow1'><strong>Beschreibung</strong></td><td class='trow1'><input type="text" name="art" id="art" value="{$row['art']}" class="textbox" /></td></tr>
+		<tr>
+<td align="center" colspan='2'><input type="submit" name="edit" value="editieren" id="submit" class="button"></td></tr></form></table>
+	  </form>
+		</div><a href="#closepop" class="closepop"></a>
+</div>
+
+<a href="#popinfo$row[rid]"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+
+____________________________________
+relationen_bit_profil_edit_npc
+
+<style>.infopop { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: hsla(0, 0%, 0%, 0.5); z-index: 1; opacity:0; -webkit-transition: .5s ease-in-out; -moz-transition: .5s ease-in-out; transition: .5s ease-in-out; pointer-events: none; } .infopop:target { opacity:1; pointer-events: auto; } .infopop > .pop {width: 300px; position: relative; margin: 10% auto; padding: 25px; z-index: 3; } .closepop { position: absolute; right: -5px; top:-5px; width: 100%; height: 100%; z-index: 2; }</style>
+<div id="popinfo$row[rid]" class="infopop">
+  <div class="pop"><form method="post" action=""  enctype="multipart/form-data"><input type='hidden' value='{$row['rid']}' name='getrid'><input type='hidden' value='{$row['anfrager']}' name='anfrager'> <input type='hidden' value='{$row['angefragte']}' name='angefragte'>
+<table border="0" cellspacing="5" cellpadding="{$theme['tablespace']}" class="tborder" style="width: 50%; margin:auto;">
+	<tr><td class='trow1' align='center' colspan='2'>Editieren für {$row['username']}</td></tr>
+	<tr>		<td class='trow1'><strong>NPC Name</strong></td>
+	  <td class='trow1'>
+		<input type="text" name="chara_name" id="chara_name" value="{$row['username']}" class="textbox" /></td></tr>
+
+	<tr><td class='trow1'><strong>Relation</strong></td>
+			<td class='trow1'><select name="kat">
+			<option value="{$row['kat']}">{$row['kat']}</option>
+				<option value="familie">Familie</option>
+		<option value="freunde">Freunde</option>
+			<option value="bekannte">Bekannte</option>
+	<option value="liebe">Liebe</option>
+<option value="feinde">Feinde</option>
+		<option value="vergangen">Vergangenheit</option>
+			</select></td></tr>
+		<tr><td class='trow1'><strong>Beschreibung</strong></td><td class='trow1'><input type="text" name="art" id="art" value="{$row['art']}" class="textbox" /></td></tr>
+	  		<tr><td class='trow1'><strong>Shortfacts</strong></td><td class='trow1'><input type="text" name="shortfacts" id="shortfacts" value="{$row['shortfacts']}" class="textbox" /></td></tr>
+
+	  <tr>
+<td align="center" colspan='2'><input type="submit" name="npc_edit" value="editieren" id="submit" class="button"></td></tr></form></table>
+	  </form>
+		</div><a href="#closepop" class="closepop"></a>
+</div>
+
+<a href="#popinfo$row[rid]"><i class="fa fa-edit" aria-hidden="true"></i></a>
+____________________________________
+relationen_formular
+
+<table border="0" cellspacing="5" cellpadding="{$theme['tablespace']}" class="tborder" style="width: 50%; margin:auto;">
+	<form id="relationen" method="post" action="member.php?action=profile&uid={$memprofile['uid']}">
+	<tr><td class='trow1'><h3>Relationsart</h3></td><td class='trow1'><h3>Bezeichnung</h3></td>
+	</tr>
+		<tr><td class='trow1'><select name="kat"><option>Relation</option>
+			<option value="familie">Familie</option>
+		<option value="freunde">Freunde</option>
+			<option value="bekannte">Bekannte</option>
+	<option value="liebe">Liebe</option>
+<option value="feinde">Feinde</option>
+		<option value="vergangen">Vergangenheit</option>
+	</select></td><td class='trow1'><input type="text" name="art" id="art" value="" class="textbox" /></td>
+<td align="center"><input type="submit" name="add" value="eintragen" id="submit" class="button"></td></tr></form></table>
+____________________________________
+relationen_formular_npc
+
+<table border="0" cellspacing="5" cellpadding="{$theme['tablespace']}" class="tborder" style="width: 50%; margin:auto;">
+	<form id="relationen" method="post" action="member.php?action=profile&uid={$memprofile['uid']}"  enctype="multipart/form-data">
+		<tr><td class='trow1'><h3>NPC Name</h3></td><td class='trow1'><h3>Relation</h3></td>
+		</tr>
+		<tr>
+						<td class='trow1'><input type="text" name="chara_name" id="chara_name" placeholder="Vorname Nachname" class="textbox"  style="width: 200px;" /></td>
+			<td class='trow1'><select name="kat" style="width: 200px;" ><option>Relation</option>
+				<option value="familie">Familie</option>
+		<option value="freunde">Freunde</option>
+			<option value="bekannte">Bekannte</option>
+	<option value="liebe">Liebe</option>
+<option value="feinde">Feinde</option>
+		<option value="vergangen">Vergangenheit</option>
+				</select></td></tr>
+		<tr>
+	<td class='trow1'><h3>Art der Relation</h3></td><td class='trow1'><h3>Shortfacts</h3></td>
+			</tr>
+	<tr>	<td class='trow1'><input type="text" name="art" id="art" placeholder="Mutter, Vater, beste Freunde, Feinde etc." class="textbox" style="width: 200px;"  /></td>
+	<td class='trow1'><input type="text" name="shortfacts" id="shortfacts" placeholder="xx Jahre # Beruf/Haus # Blutstatus" class="textbox" style="width: 200px;" /></td>	</tr>
+
+<tr>
+<td align="center" colspan="2"><input type="submit" name="npc_add" value="eintragen" id="submit" class="button"></td></tr></form></table>
+____________________________________
+relationen_profil_bit
+
+<tr class='relas_td'><td width='20%' align='center'>{$rel_avatar}</td>
+<td align='center'><div class='relaname'>{$user}</div>
+	<div class="rela_facts">	&raquo; {$shortfacts}</div>
+	<div class="rela_kind">	&raquo; {$row['art']}</div></td>
+</td>
+<td align='center'>
+	{$delete} {$edit}
+</td>
+</tr>
+
+
