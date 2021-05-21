@@ -163,8 +163,27 @@ function relationen_install()
 
     $insert_array = array(
         'title' => 'relationen_anfragen_bit',
-        'template' => $db->escape_string('<tr><td class=\'trow1\' align="center">&raquo;{$user}</td><td class=\'trow1\'>&raquo; Beziehung: <b>{$row[\'art\']}</b><br />
-	&raquo; Kategorie: <b>{$row[\'kat\']}</b></td><td class=\'trow1\'>{$optionen}</td></tr>'),
+        'template' => $db->escape_string('<tr><td class=\'trow1\' align="center">&raquo; {$user}</td><td class=\'trow1\'>&raquo; Beziehung: <b>{$row[\'art\']}</b><br />
+	&raquo; Kategorie: <b>{$row[\'kat\']}</b></td><td class=\'trow1\'>{$row[\'description_wanted\']}</td><td class=\'trow1\'>{$optionen}<div class="modal" id="double_{$row[\'rid\']}" style="display: none;">{$rela_back}</div></td></tr>'),
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+
+    $insert_array = array(
+        'title' => 'relationen_anfragen_back',
+        'template' => $db->escape_string('<form method="post" action=""><input type=\'hidden\' value=\'{$row[\'rid\']}\' name=\'getrid\'><input type=\'hidden\' value=\'{$row[\'angefragte\']}\' name=\'anfrager\'><input type=\'hidden\' value=\'{$row[\'anfrager\']}\' name=\'angefragte\'>
+<table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 400px; margin:auto;">
+	<tr><td class=\'trow1\' align=\'center\' colspan=\'2\'><h3>Ebenfalls eintragen von <b>{$row[\'username\']}</b></h3></td></tr>
+	<tr>	<td class=\'trow1\'><strong>Relation</strong></td>	<td class=\'trow1\'><select name="kat">
+  {$rela_select_edit}
+			</select></td></tr>
+		<tr><td class=\'trow1\'><strong>Beschreibung</strong></td><td class=\'trow1\'><input type="text" name="art" id="art" value="{$row[\'art\']}" class="textbox" /></td></tr>
+		<tr>	<td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row[\'description_wanted\']}</textarea></td>	</tr>
+		<tr>
+<td align="center" colspan=\'2\'><input type="submit" name="double" value="ebenfalls Eintragen" id="submit" class="button"></td></tr></form></table>
+	  </form>'),
         'sid' => '-1',
         'version' => '',
         'dateline' => TIME_NOW
@@ -187,9 +206,7 @@ function relationen_install()
 
     $insert_array = array(
         'title' => 'relationen_bit_profil_edit',
-        'template' => $db->escape_string('<style>.infopop { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: hsla(0, 0%, 0%, 0.5); z-index: 1; opacity:0; -webkit-transition: .5s ease-in-out; -moz-transition: .5s ease-in-out; transition: .5s ease-in-out; pointer-events: none; } .infopop:target { opacity:1; pointer-events: auto; } .infopop > .pop {position: relative; margin: 10% auto; padding: 25px; z-index: 3; } .closepop { position: absolute; right: -5px; top:-5px; width: 100%; height: 100%; z-index: 2; }</style>
-<div id="popinfo$row[rid]" class="infopop">
-  <div class="pop"><form method="post" action=""><input type=\'hidden\' value=\'{$row[\'rid\']}\' name=\'getrid\'><input type=\'hidden\' value=\'{$row[\'anfrager\']}\' name=\'anfrager\'> <input type=\'hidden\' value=\'{$row[\'angefragte\']}\' name=\'angefragte\'>
+        'template' => $db->escape_string('<form method="post" action=""><input type=\'hidden\' value=\'{$row[\'rid\']}\' name=\'getrid\'><input type=\'hidden\' value=\'{$row[\'anfrager\']}\' name=\'anfrager\'> <input type=\'hidden\' value=\'{$row[\'angefragte\']}\' name=\'angefragte\'>
 <table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 50%; margin:auto;">
 	<tr><td class=\'trow1\' align=\'center\' colspan=\'2\'><h3>Editieren für <b>{$row[\'username\']}</b></h3></td></tr>
 	<tr>	<td class=\'trow1\'><strong>Relation</strong></td>	<td class=\'trow1\'><select name="kat">
@@ -200,11 +217,7 @@ function relationen_install()
 		<tr>	<td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row[\'description_wanted\']}</textarea></td>	</tr>
 		<tr>
 <td align="center" colspan=\'2\'><input type="submit" name="rela_edit" value="editieren" id="submit" class="button"></td></tr></form></table>
-	  </form>
-		</div><a href="#closepop" class="closepop"></a>
-</div>
-
-&nbsp;&nbsp;<a href="#popinfo$row[rid]" title="Relation editieren"><i class="fa fa-edit" aria-hidden="true"></i></a>'),
+	  </form>'),
         'sid' => '-1',
         'version' => '',
         'dateline' => TIME_NOW
@@ -214,9 +227,7 @@ function relationen_install()
 
     $insert_array = array(
         'title' => 'relationen_bit_profil_edit_npc',
-        'template' => $db->escape_string('<style>.infopop { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: hsla(0, 0%, 0%, 0.5); z-index: 1; opacity:0; -webkit-transition: .5s ease-in-out; -moz-transition: .5s ease-in-out; transition: .5s ease-in-out; pointer-events: none; } .infopop:target { opacity:1; pointer-events: auto; } .infopop > .pop {position: relative; margin: 10% auto; padding: 25px; z-index: 3; } .closepop { position: absolute; right: -5px; top:-5px; width: 100%; height: 100%; z-index: 2; }</style>
-<div id="popinfo$row[rid]" class="infopop">
-  <div class="pop"><form method="post" action=""  enctype="multipart/form-data"><input type=\'hidden\' value=\'{$row[\'rid\']}\' name=\'getrid\'><input type=\'hidden\' value=\'{$row[\'anfrager\']}\' name=\'anfrager\'> 
+        'template' => $db->escape_string('<form method="post" action=""  enctype="multipart/form-data"><input type=\'hidden\' value=\'{$row[\'rid\']}\' name=\'getrid\'><input type=\'hidden\' value=\'{$row[\'anfrager\']}\' name=\'anfrager\'> 
 <table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 50%; margin:auto;">
 	<tr><td class=\'trow1\' align=\'center\' colspan=\'2\'><h3>Editieren für <b>{$npc_name[\'username\']}</b></h3></td></tr>
 	<tr>		<td class=\'trow1\'><strong>NPC Name</strong></td>
@@ -235,11 +246,7 @@ function relationen_install()
 	<tr>	<td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row[\'description_wanted\']}</textarea></td>	</tr>
 	  <tr>
 <td align="center" colspan=\'2\'><input type="submit" name="npc_edit" value="editieren" id="submit" class="button"></td></tr></form></table>
-	  </form>
-		</div><a href="#closepop" class="closepop"></a>
-</div>
-
-&nbsp;<a href="#popinfo$row[rid]" title="Relation editieren"><i class="fa fa-edit" aria-hidden="true"></i></a>'),
+	  </form>'),
         'sid' => '-1',
         'version' => '',
         'dateline' => TIME_NOW
@@ -506,7 +513,7 @@ function profile_relation(){
             $username= $_POST['chara_name'];
             $kat = $_POST['kat'];
             $art = $_POST['art'];
-            $shortfacts = $_POST['shortfacts'];
+            $shortfacts = $_POST['age']." # ".$_POST['work']." # ".$_POST['relation'];
             $npc_wanted = $_POST['npc_wanted'];
             $desc = $_POST['description_wanted'];
             $ok = 1;
@@ -552,7 +559,7 @@ function profile_relation(){
     WHERE r.anfrager = '" . $uid . "'
     AND r.ok = '1'
     and r.kat = '".$cat."'
-    ORDER BY r.username ASC, r.art ASC
+    ORDER BY r.username ASC
   "  );
         while ($row = $db->fetch_array($select)) {
             $npc_wanted = "";
@@ -589,11 +596,6 @@ function profile_relation(){
                     $npc_wanted = "";
                 }
 
-                if(!empty($row['description_wanted'])) {
-                    eval("\$desc_popup = \"" . $templates->get("relationen_bit_profil_desc") . "\";");
-                } else{
-                    $desc_popup = "";
-                }
 
                 $rel_avatar = "<img src='{$theme['imgdir']}/noavatar.png'>";
 
@@ -610,16 +612,22 @@ function profile_relation(){
                         }
 
                     }
-                    eval("\$edit = \"" . $templates->get("relationen_bit_profil_edit_npc") . "\";");
+
+                    $edit = "<a onclick=\"$('#edit_{$row['rid']}').modal({ fadeDuration: 250, keepelement: true, zIndex: (typeof modal_zindex !== 'undefined' ? modal_zindex : 9999) }); return false;\" style=\"cursor: pointer;\"><i class=\"fa fa-edit\" aria-hidden=\"true\"></i></a> <br />";
+                    eval("\$edit_rela = \"" . $templates->get("relationen_bit_profil_edit_npc") . "\";");
                 }
             } else{
 
                 $username = format_name($row['username'], $row['usergroup'], $row['displaygroup']);
                 $user = build_profile_link($username, $row['uid']);
+                if ($row['birthday']) {
+                    $age = intval(date('Y', strtotime("1." . $mybb->settings['minica_month'] . "." . $mybb->settings['minica_year'] . "") - strtotime($row['birthday']))) - 1970;
+                } else {
+                    $age = "k/A";
+                }
 
-
-                    //Shortfacts kannst du hier eingeben. Hierzu kannst du jegliche Profilfelder in der form $row['fidxx'] einfügen.
-                $shortfacts = "Hier fehlen noch die Shortfacts in der PHP.";
+                //Shortfacts kannst du hier eingeben. Hierzu kannst du jegliche Profilfelder in der form $row['fidxx'] einfügen.
+                $shortfacts = $age." Jahre # ".$row['job']." # ".$row['fid27'];
 
                 if($mybb->user['uid'] != 0) {
                     if (!empty($row['avatar'])) {
@@ -650,7 +658,9 @@ function profile_relation(){
                     }
 
 
-                    eval("\$edit = \"" . $templates->get("relationen_bit_profil_edit") . "\";");
+                    $edit = "<a onclick=\"$('#edit_{$row['rid']}').modal({ fadeDuration: 250, keepelement: true, zIndex: (typeof modal_zindex !== 'undefined' ? modal_zindex : 9999) }); return false;\" style=\"cursor: pointer;\"><i class=\"fa fa-edit\" aria-hidden=\"true\"></i></a> <br />";
+
+                    eval("\$edit_rela = \"" . $templates->get("relationen_bit_profil_edit") . "\";");
 
                 }
             }
@@ -714,50 +724,50 @@ function profile_relation(){
         }
 
 
-            if ($angefragte == $row['angefragte'] && $angefragte != '0') {
-                //Wenn der Angefragte editiert
-                $select = $db->query("SELECT *
+        if ($angefragte == $row['angefragte'] && $angefragte != '0') {
+            //Wenn der Angefragte editiert
+            $select = $db->query("SELECT *
 		 FROM " . TABLE_PREFIX . "relationen r
 		LEFT JOIN " . TABLE_PREFIX . "users u
 		ON r.anfrager = u.uid
 		WHERE r.rid = '" . $getrid . "'
 		");
-                $row = $db->fetch_array($select);
-                $pm_change = array(
-                    "subject" => "Relation geändert",
-                    "message" => "Liebe/r {$row['username']}, <br /> ich habe die Relation bei dir geändert. Bitte schau nach, ob sie für dich in Ordnung ist. ",
-                    //to: wer muss die anfrage bestätigen
-                    "fromid" => $anfrager,
-                    //from: wer hat die anfrage gestellt
-                    "toid" => $angefragte
-                );
-                // $pmhandler->admin_override = true;
-                $pmhandler->set_data($pm_change);
-                if (!$pmhandler->validate_pm())
-                    return false;
-                else {
-                    $pmhandler->insert_pm();
-                }
-            }
-
-
-
-            $edit_record = array(
-                "anfrager" => $db->escape_string($anfrager),
-                "angefragte" => $db->escape_string($angefragte),
-                "kat" => $db->escape_string($kat),
-                "art" => $db->escape_string($art),
-                "description_wanted" => $db->escape_string($desc),
-                "shortfacts" => $db->escape_string($shortfacts),
+            $row = $db->fetch_array($select);
+            $pm_change = array(
+                "subject" => "Relation geändert",
+                "message" => "Liebe/r {$row['username']}, <br /> ich habe die Relation bei dir geändert. Bitte schau nach, ob sie für dich in Ordnung ist. ",
+                //to: wer muss die anfrage bestätigen
+                "fromid" => $anfrager,
+                //from: wer hat die anfrage gestellt
+                "toid" => $angefragte
             );
+            // $pmhandler->admin_override = true;
+            $pmhandler->set_data($pm_change);
+            if (!$pmhandler->validate_pm())
+                return false;
+            else {
+                $pmhandler->insert_pm();
+            }
+        }
 
 
-            $db->update_query("relationen", $edit_record, "rid='{$getrid}'");
-            redirect("member.php?action=profile&uid={$memprofile['uid']}");
+
+        $edit_record = array(
+            "anfrager" => $db->escape_string($anfrager),
+            "angefragte" => $db->escape_string($angefragte),
+            "kat" => $db->escape_string($kat),
+            "art" => $db->escape_string($art),
+            "description_wanted" => $db->escape_string($desc),
+            "shortfacts" => $db->escape_string($shortfacts),
+        );
+
+
+        $db->update_query("relationen", $edit_record, "rid='{$getrid}'");
+        redirect("member.php?action=profile&uid={$memprofile['uid']}");
 
     }
     if(isset($mybb->input['npc_edit'])){
-            // NPC bearbeiten
+        // NPC bearbeiten
         $getrid = $mybb->input['getrid'];
         $anfrager = $mybb->input['anfrager'];
         $angefragte = $mybb->input['angefragte'];
@@ -782,7 +792,7 @@ function profile_relation(){
 
         $db->update_query("relationen", $edit_record, "rid='{$getrid}'");
         redirect("member.php?action=profile&uid={$memprofile['uid']}");
-            }
+    }
 
 
 }
@@ -790,6 +800,50 @@ function profile_relation(){
 
 function global_relation_alert(){
     global $db, $mybb, $templates,  $anfrage, $relationen_alert;
+
+    //welcher user ist online
+    $this_user = intval($mybb->user['uid']);
+
+//für den fall nicht mit hauptaccount online
+    $as_uid = intval($mybb->user['as_uid']);
+
+// suche alle angehangenen accounts
+    if ($as_uid == 0) {
+        $select = $db->query("SELECT * FROM " . TABLE_PREFIX . "users 
+        WHERE (as_uid = $this_user) OR (uid = $this_user) ORDER BY username ASC");
+    } else if ($as_uid != 0) {
+//id des users holen wo alle angehangen sind
+        $select = $db->query("SELECT * FROM " . TABLE_PREFIX . "users WHERE (as_uid = $as_uid) OR (uid = $this_user) OR (uid = $as_uid) ORDER BY username ASC");
+    }
+
+    while($alert = $db->fetch_array($select)) {
+        $select_alert = $db->query("SELECT *
+    FROM " . TABLE_PREFIX . "relationen r
+    LEFT JOIN ".TABLE_PREFIX."users u
+    on (r.angefragte = u.uid)
+    WHERE ok = '0'
+    and  angefragte != '" . $mybb->user['uid'] . "'
+    and angefragte = '".$alert['uid']."'
+     ");
+
+        $alert2 = $db->fetch_array($select_alert);
+        $count = mysqli_num_rows($select_alert);
+
+        $username = format_name($alert2['username'], $alert2['usergroup'], $alert2['displaygroup']);
+        $user = build_profile_link($username, $alert2['uid']);
+
+        if ($mybb->user['uid'] != 0) {
+            if ($count == '1') {
+                $anfrage = "Relationsanfrage";
+            } else {
+                $anfrage = "Relationsanfragen";
+            }
+            if ($count != 0) {
+                eval("\$relationen_alert = \"" . $templates->get("relationen_alert_other") . "\";");
+            }
+        }
+
+    }
 
     $select = $db->query("SELECT *
     FROM ".TABLE_PREFIX."relationen
@@ -801,9 +855,9 @@ function global_relation_alert(){
     $count = mysqli_num_rows ($select);
     if($mybb->user['uid'] != 0) {
         if ($count == '1') {
-            $anfrage = "Anfrage";
+            $anfrage = "Relationsanfrage";
         } else {
-            $anfrage = "Anfragen";
+            $anfrage = "Relationsanfragen";
         }
         if ($count != 0) {
             eval("\$relationen_alert = \"" . $templates->get("relationen_alert") . "\";");
@@ -813,7 +867,7 @@ function global_relation_alert(){
 
 function usercp_relation(){
 
-    global $mybb, $templates, $lang, $header, $headerinclude, $footer, $page, $usercpnav, $db, $optionen,  $anfragen_bit, $deine_anfragen;
+    global $mybb, $templates, $lang, $header, $headerinclude, $footer, $page, $usercpnav, $db, $optionen,  $anfragen_bit, $deine_anfragen, $rela_type, $rela_select_edit;
 
     if($mybb->get_input('action') == 'relationen')
     {
@@ -925,9 +979,8 @@ function usercp_relation(){
         while($row = $db->fetch_array($all_relas_query)){
             $username = format_name($row['username'], $row['usergroup'], $row['displaygroup']);
             $user = build_profile_link($username, $row['uid']);
-            $optionen = "<a href='usercp.php?action=relationen&double=$row[rid]'><i class=\"fas fa-undo\"></i> Ebenfalls eintragen</a> <br />
+            $optionen = "<a onclick=\"$('#double_{$row['rid']}').modal({ fadeDuration: 250, keepelement: true, zIndex: (typeof modal_zindex !== 'undefined' ? modal_zindex : 9999) }); return false;\" style=\"cursor: pointer;\"><i class=\"fas fa-undo\"></i> Ebenfalls eintragen</a> <br />
 <a href='usercp.php?action=relationen&olddel=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Löschen</a>";
-
 
             if ($row['kat'] == 'familie') {
                 $row['kat'] = "Familie";
@@ -943,6 +996,19 @@ function usercp_relation(){
                 $row['kat'] = "Vergangenheit";
             }
 
+            $rela_cat = $mybb->settings['relation_category'];
+
+            $rela_cat = explode(", ", $rela_cat);
+            foreach ($rela_cat as $edit_cat){
+
+                if($edit_cat == $rela_type){
+                    $rela_select_edit .= "<option selected>{$edit_cat}</option>";
+                } elseif($edit_cat != $rela_type){
+                    $rela_select_edit .= "<option>{$edit_cat}</option>";
+                }
+
+            }
+            eval("\$rela_back = \"" . $templates->get("relationen_anfragen_back") . "\";");
             eval("\$all_relas .= \"" . $templates->get("relationen_anfragen_bit") . "\";");
         }
 
@@ -1068,17 +1134,13 @@ function usercp_relation(){
         $double = $mybb->input['double'];
 
         if($double){
-            $d_query = $db->query("SELECT *
-            FROM ".TABLE_PREFIX."relationen
-            WHERE rid = '$double'
-            ");
-
-            $double_fetch = $db->fetch_array($d_query);
-            $anfrager = $double_fetch['angefragte'];
-            $angefragte = $double_fetch['anfrager'];
-            $username= $mybb->user['username'];
-            $kat = $double_fetch['kat'];
-            $art = $double_fetch['art'];
+            $getrid = $mybb->input['getrid'];
+            $username = $mybb->user['username'];
+            $anfrager =$mybb->input['anfrager'];
+            $angefragte = $mybb->input['angefragte'];
+            $desc = $mybb->input['description_wanted'];
+            $kat = $mybb->input['kat'];
+            $art = $mybb->input['art'];
             $shortfacts = "";
 
             $new_record = array(
@@ -1087,6 +1149,7 @@ function usercp_relation(){
                 "angefragte" => $db->escape_string($angefragte),
                 "kat" => $db->escape_string($kat),
                 "art" => $db->escape_string($art),
+                "description_wanted" => $db->escape_string($desc),
                 "shortfacts" => $db->escape_string($shortfacts)
             );
 
