@@ -513,7 +513,7 @@ function profile_relation(){
             $username= $_POST['chara_name'];
             $kat = $_POST['kat'];
             $art = $_POST['art'];
-            $shortfacts = $_POST['age']." # ".$_POST['work']." # ".$_POST['relation'];
+            $shortfacts = $_POST['shortfacts'];
             $npc_wanted = $_POST['npc_wanted'];
             $desc = $_POST['description_wanted'];
             $ok = 1;
@@ -627,7 +627,7 @@ function profile_relation(){
                 }
 
                 //Shortfacts kannst du hier eingeben. Hierzu kannst du jegliche Profilfelder in der form $row['fidxx'] einfügen.
-                $shortfacts = $age." Jahre # ".$row['job']." # ".$row['fid27'];
+                $shortfacts = $row['fid10']." # ".$row['fid2'];
 
                 if($mybb->user['uid'] != 0) {
                     if (!empty($row['avatar'])) {
@@ -882,6 +882,9 @@ function usercp_relation(){
         require_once MYBB_ROOT."inc/datahandlers/pm.php";
         $pmhandler = new PMDataHandler();
 
+        $rela_cat = $mybb->settings['relation_category'];
+
+        $rela_cat = explode(", ", $rela_cat);
 
 //ab geht es mit der Abfrage. Hier ist der Part für die erhaltenen Anfragen
         $select = $db->query("SELECT *
@@ -906,20 +909,6 @@ function usercp_relation(){
                 $optionen = " <a href='usercp.php?action=relationen&ok=$row[rid]'><i class=\"fa fa-check\" aria-hidden=\"true\"></i> Annehmen</a><br />
                                <a href='usercp.php?action=relationen&del=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Löschen</a>";
 
-                if ($row['kat'] == 'familie') {
-                    $row['kat'] = "Familie";
-                } elseif ($row['kat'] == 'freunde') {
-                    $row['kat'] = "Freunde";
-                } elseif ($row['kat'] == 'bekannte') {
-                    $row['kat'] = "Bekannte";
-                } elseif ($row['kat'] == 'liebe') {
-                    $row['kat'] = "Liebe";
-                } elseif ($row['kat'] == 'feinde') {
-                    $row['kat'] = "Feinde";
-                } elseif ($row['kat'] == 'vergangen') {
-                    $row['kat'] = "Vergangenheit";
-                }
-
                 eval("\$anfragen_bit .= \"" . $templates->get("relationen_anfragen_bit") . "\";");
             }
         }
@@ -942,21 +931,6 @@ function usercp_relation(){
                 $username = format_name($row['username'], $row['usergroup'], $row['displaygroup']);
                 $user = build_profile_link($username, $row['uid']);
                 $optionen = "<a href='usercp.php?action=relationen&del=$row[rid]'><i class=\"fas fa-undo\"></i> Zurückziehen</a>";
-
-
-                if ($row['kat'] == 'familie') {
-                    $row['kat'] = "Familie";
-                } elseif ($row['kat'] == 'freunde') {
-                    $row['kat'] = "Freunde";
-                } elseif ($row['kat'] == 'bekannte') {
-                    $row['kat'] = "Bekannte";
-                } elseif ($row['kat'] == 'liebe') {
-                    $row['kat'] = "Liebe";
-                } elseif ($row['kat'] == 'feinde') {
-                    $row['kat'] = "Feinde";
-                } elseif ($row['kat'] == 'vergangen') {
-                    $row['kat'] = "Vergangenheit";
-                }
 
                 eval("\$deine_anfragen .= \"" . $templates->get("relationen_anfragen_bit") . "\";");
             }
@@ -981,20 +955,6 @@ function usercp_relation(){
             $user = build_profile_link($username, $row['uid']);
             $optionen = "<a onclick=\"$('#double_{$row['rid']}').modal({ fadeDuration: 250, keepelement: true, zIndex: (typeof modal_zindex !== 'undefined' ? modal_zindex : 9999) }); return false;\" style=\"cursor: pointer;\"><i class=\"fas fa-undo\"></i> Ebenfalls eintragen</a> <br />
 <a href='usercp.php?action=relationen&olddel=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Löschen</a>";
-
-            if ($row['kat'] == 'familie') {
-                $row['kat'] = "Familie";
-            } elseif ($row['kat'] == 'freunde') {
-                $row['kat'] = "Freunde";
-            } elseif ($row['kat'] == 'bekannte') {
-                $row['kat'] = "Bekannte";
-            } elseif ($row['kat'] == 'liebe') {
-                $row['kat'] = "Liebe";
-            } elseif ($row['kat'] == 'feinde') {
-                $row['kat'] = "Feinde";
-            } elseif ($row['kat'] == 'vergangen') {
-                $row['kat'] = "Vergangenheit";
-            }
 
             $rela_cat = $mybb->settings['relation_category'];
 
@@ -1034,21 +994,6 @@ function usercp_relation(){
             }
 
             $optionen = "<a href='usercp.php?action=relationen&olddel=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Löschen</a>";
-
-
-            if ($row['kat'] == 'familie') {
-                $row['kat'] = "Familie";
-            } elseif ($row['kat'] == 'freunde') {
-                $row['kat'] = "Freunde";
-            } elseif ($row['kat'] == 'bekannte') {
-                $row['kat'] = "Bekannte";
-            } elseif ($row['kat'] == 'liebe') {
-                $row['kat'] = "Liebe";
-            } elseif ($row['kat'] == 'feinde') {
-                $row['kat'] = "Feinde";
-            } elseif ($row['kat'] == 'vergangen') {
-                $row['kat'] = "Vergangenheit";
-            }
 
             eval("\$all_own_relas .= \"" . $templates->get("relationen_anfragen_bit") . "\";");
         }
