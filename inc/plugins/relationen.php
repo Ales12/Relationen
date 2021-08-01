@@ -15,14 +15,14 @@ $plugins->add_hook('global_intermediate', 'global_relation_alert');
 function relationen_info()
 {
     return array(
-        "name"			=> "RPG Relationen im Profil",
-        "description"	=> "Hier können Relationen im Profil selbst verwaltet werden.",
-        "website"		=> "",
-        "author"		=> "Alex",
-        "authorsite"	=> "",
-        "version"		=> "1.0",
-        "guid" 			=> "",
-        "codename"		=> "",
+        "name"            => "RPG Relationen im Profil",
+        "description"    => "Hier können Relationen im Profil selbst verwaltet werden.",
+        "website"        => "",
+        "author"        => "Alex",
+        "authorsite"    => "",
+        "version"        => "1.0",
+        "guid"             => "",
+        "codename"        => "",
         "compatibility" => "*"
     );
 }
@@ -40,8 +40,8 @@ function relationen_install()
           `kat` varchar(255) NOT NULL,
           `art` varchar(255) NOT NULL,
           `shortfacts` varchar(255) NOT NULL,
-		  `npc_wanted` varchar(500) NOT NULL,
-		  `description_wanted` text NOT NULL,
+          `npc_wanted` varchar(500) NOT NULL,
+          `description_wanted` text NOT NULL,
           `ok` int(11) NOT NULL default '0',
           PRIMARY KEY (`rid`)
         ) ENGINE=MyISAM".$db->build_create_table_collation());
@@ -86,14 +86,14 @@ function relationen_install()
     $insert_array = array(
         'title' => 'relationen',
         'template' => $db->escape_string('<table width="100%"><tr><td class=\'tcat\'><strong>Beziehungskiste</strong></td></tr>
-	<tr><td class="trow1"><details>
-		<summary>Relationsformular ausklappen</summary>
+    <tr><td class="trow1"><details>
+        <summary>Relationsformular ausklappen</summary>
 {$relationen_formular}
-		</details>
+        </details>
 </td></tr>
 <tr><td><div class="profil_flex">
-	{$relationen_bit_profil}
-	</div>	</td></tr>
+    {$relationen_bit_profil}
+    </div>    </td></tr>
 </table>'),
         'sid' => '-1',
         'version' => '',
@@ -129,15 +129,15 @@ function relationen_install()
         'title' => 'relationen_anfragen_back',
         'template' => $db->escape_string('<form method="post" action=""><input type="hidden" value="{$row["rid"]}" name="getrid"><input type="hidden" value="{$row["angefragte"]}" name="anfrager"><input type="hidden" value="{$row["anfrager"]}" name="angefragte">
 <table border="0" cellspacing="5" cellpadding="{$theme["tablespace"]}" class="tborder" style="width: 400px; margin:auto;">
-	<tr><td class="trow1" align="center" colspan="2"><h3>Ebenfalls eintragen von <b>{$row["username"]}</b></h3></td></tr>
-	<tr>	<td class="trow1"><strong>Relation</strong></td>	<td class="trow1"><select name="kat">
+    <tr><td class="trow1" align="center" colspan="2"><h3>Ebenfalls eintragen von <b>{$row["username"]}</b></h3></td></tr>
+    <tr>    <td class="trow1"><strong>Relation</strong></td>    <td class="trow1"><select name="kat">
   {$rela_select_edit}
-			</select></td></tr>
-		<tr><td class="trow1"><strong>Beschreibung</strong></td><td class="trow1"><input type="text" name="art" id="art" value="{$row["art"]}" class="textbox" /></td></tr>
-		<tr>	<td class="trow1" ><strong>Beziehungstext</strong></td><td class="trow1"><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row["description_wanted"]}</textarea></td>	</tr>
-		<tr>
+            </select></td></tr>
+        <tr><td class="trow1"><strong>Beschreibung</strong></td><td class="trow1"><input type="text" name="art" id="art" value="{$row["art"]}" class="textbox" /></td></tr>
+        <tr>    <td class="trow1" ><strong>Beziehungstext</strong></td><td class="trow1"><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row["description_wanted"]}</textarea></td>    </tr>
+        <tr>
 <td align="center" colspan="2"><input type="submit" name="double" value="ebenfalls Eintragen" id="submit" class="button"></td></tr></form></table>
-	  </form>'),
+      </form>'),
         'sid' => '-1',
         'version' => '',
         'dateline' => TIME_NOW
@@ -154,35 +154,35 @@ function relationen_install()
 <body>
 {$header}
 <table width="100%" border="0" align="center">{$usercpnav}
-	<tr>
+    <tr>
 
 <td valign="top">
-	<table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
-		<tr><td class="thead"><h1>Offene Relationsanfragen</h1></td>
-		</tr>	<tr><td align="center">
-		<table width="90%" style="margin: auto;">
-			<tr><td class="thead" colspan="4"><strong>Deine eingegangen Anfragen</strong></td></tr>
-	<tr class="tcat"><td width="10%"><strong>Anfrager</strong></td><td width="20%"><strong>Eintrag</strong></td><td width="50%"><strong>Beziehungsbeschreibung</strong></td><td width="10%"><strong>Optionen</strong></td></tr>
-	{$anfragen_bit}
-				<tr><td class="thead" colspan="4"><strong>Deine ausgegangen Anfragen</strong></td></tr>
-		<tr class="tcat"><td width="10%"><strong>Angefragt bei</strong></td><td width="20%"><strong>Eintrag</strong></td><td width="50%"><strong>Beziehungsbeschreibung</strong></td><td width="10%"><strong>Optionen</strong></td></tr>
-	{$deine_anfragen}
-		</table><br />
-		</td>
-		</tr>
-		<tr><td class="thead"><h1>Eingetragene Relationsanfragen</h1></td></tr>
-			<tr><td><table width="90%" style="margin: auto;">	
-		
-		<tr><td class="thead" colspan="4"><strong>Hier bist du eingetragen</strong></td></tr>
-		<tr class="tcat"><td width="10%"><strong>Eingetragen bei</strong></td><td width="20%"><strong>Eintrag</strong></td><td width="40%"><strong>Beziehungsbeschreibung</strong></td><td width="20%"><strong>Optionen</strong></td></tr>
-	{$all_relas}
-				<tr><td class="thead" colspan="4"><strong>Deine Relationen</strong></td></tr>
-		<tr class="tcat"><td width="10%"><strong>Angefragt bei</strong></td><td width="20%"><strong>Eintrag</strong></td><td width="40%"><strong>Beziehungsbeschreibung</strong></td><td width="20%"><strong>Optionen</strong></td></tr>
-	{$all_own_relas}
-		</table>
-		</td></tr>
-	</table>
-	</td>
+    <table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
+        <tr><td class="thead"><h1>Offene Relationsanfragen</h1></td>
+        </tr>    <tr><td align="center">
+        <table width="90%" style="margin: auto;">
+            <tr><td class="thead" colspan="4"><strong>Deine eingegangen Anfragen</strong></td></tr>
+    <tr class="tcat"><td width="10%"><strong>Anfrager</strong></td><td width="20%"><strong>Eintrag</strong></td><td width="50%"><strong>Beziehungsbeschreibung</strong></td><td width="10%"><strong>Optionen</strong></td></tr>
+    {$anfragen_bit}
+                <tr><td class="thead" colspan="4"><strong>Deine ausgegangen Anfragen</strong></td></tr>
+        <tr class="tcat"><td width="10%"><strong>Angefragt bei</strong></td><td width="20%"><strong>Eintrag</strong></td><td width="50%"><strong>Beziehungsbeschreibung</strong></td><td width="10%"><strong>Optionen</strong></td></tr>
+    {$deine_anfragen}
+        </table><br />
+        </td>
+        </tr>
+        <tr><td class="thead"><h1>Eingetragene Relationsanfragen</h1></td></tr>
+            <tr><td><table width="90%" style="margin: auto;">    
+        
+        <tr><td class="thead" colspan="4"><strong>Hier bist du eingetragen</strong></td></tr>
+        <tr class="tcat"><td width="10%"><strong>Eingetragen bei</strong></td><td width="20%"><strong>Eintrag</strong></td><td width="40%"><strong>Beziehungsbeschreibung</strong></td><td width="20%"><strong>Optionen</strong></td></tr>
+    {$all_relas}
+                <tr><td class="thead" colspan="4"><strong>Deine Relationen</strong></td></tr>
+        <tr class="tcat"><td width="10%"><strong>Angefragt bei</strong></td><td width="20%"><strong>Eintrag</strong></td><td width="40%"><strong>Beziehungsbeschreibung</strong></td><td width="20%"><strong>Optionen</strong></td></tr>
+    {$all_own_relas}
+        </table>
+        </td></tr>
+    </table>
+    </td>
 </tr>
 </table>
 {$footer}
@@ -197,7 +197,26 @@ function relationen_install()
     $insert_array = array(
         'title' => 'relationen_anfragen_bit',
         'template' => $db->escape_string('<tr><td class=\'trow1\' align="center">&raquo; {$user}</td><td class=\'trow1\'>&raquo; Beziehung: <b>{$row[\'art\']}</b><br />
-	&raquo; Kategorie: <b>{$row[\'kat\']}</b></td><td class=\'trow1\'>{$row[\'description_wanted\']}</td><td class=\'trow1\'>{$optionen}<div class="modal" id="double_{$row[\'rid\']}" style="display: none;">{$rela_back}</div></td></tr>'),
+    &raquo; Kategorie: <b>{$row[\'kat\']}</b></td><td class=\'trow1\'>{$row[\'description_wanted\']}</td><td class=\'trow1\'>{$optionen}<div class="modal" id="double_{$row[\'rid\']}" style="display: none;">{$rela_back}</div></td></tr>'),
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+
+    $insert_array = array(
+        'title' => 'relationen_anfragen_back',
+        'template' => $db->escape_string('<form method="post" action=""><input type=\'hidden\' value=\'{$row[\'rid\']}\' name=\'getrid\'><input type=\'hidden\' value=\'{$row[\'angefragte\']}\' name=\'anfrager\'><input type=\'hidden\' value=\'{$row[\'anfrager\']}\' name=\'angefragte\'>
+<table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 400px; margin:auto;">
+    <tr><td class=\'trow1\' align=\'center\' colspan=\'2\'><h3>Ebenfalls eintragen von <b>{$row[\'username\']}</b></h3></td></tr>
+    <tr>    <td class=\'trow1\'><strong>Relation</strong></td>    <td class=\'trow1\'><select name="kat">
+  {$rela_select_edit}
+            </select></td></tr>
+        <tr><td class=\'trow1\'><strong>Beschreibung</strong></td><td class=\'trow1\'><input type="text" name="art" id="art" value="{$row[\'art\']}" class="textbox" /></td></tr>
+        <tr>    <td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row[\'description_wanted\']}</textarea></td>    </tr>
+        <tr>
+<td align="center" colspan=\'2\'><input type="submit" name="double" value="ebenfalls Eintragen" id="submit" class="button"></td></tr></form></table>
+      </form>'),
         'sid' => '-1',
         'version' => '',
         'dateline' => TIME_NOW
@@ -207,10 +226,10 @@ function relationen_install()
     $insert_array = array(
         'title' => 'relationen_bit_profil',
         'template' => $db->escape_string('<div class="relas"><div class="relakat">{$cat}</div>
-	<div class="relas_innerbox">
+    <div class="relas_innerbox">
 <table width=\'100%\'>
-	{$characters}
-		</table></div>
+    {$characters}
+        </table></div>
 </div>'),
         'sid' => '-1',
         'version' => '',
@@ -222,16 +241,16 @@ function relationen_install()
         'title' => 'relationen_bit_profil_edit',
         'template' => $db->escape_string('<form method="post" action=""><input type=\'hidden\' value=\'{$row[\'rid\']}\' name=\'getrid\'><input type=\'hidden\' value=\'{$row[\'anfrager\']}\' name=\'anfrager\'> <input type=\'hidden\' value=\'{$row[\'angefragte\']}\' name=\'angefragte\'>
 <table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 50%; margin:auto;">
-	<tr><td class=\'trow1\' align=\'center\' colspan=\'2\'><h3>Editieren für <b>{$row[\'username\']}</b></h3></td></tr>
-	<tr>	<td class=\'trow1\'><strong>Relation</strong></td>	<td class=\'trow1\'><select name="kat">
-		<option value="{$rela_type}" selected>{$rela_type}</option>
+    <tr><td class=\'trow1\' align=\'center\' colspan=\'2\'><h3>Editieren für <b>{$row[\'username\']}</b></h3></td></tr>
+    <tr>    <td class=\'trow1\'><strong>Relation</strong></td>    <td class=\'trow1\'><select name="kat">
+        <option value="{$rela_type}" selected>{$rela_type}</option>
   {$rela_select_edit}
-			</select></td></tr>
-		<tr><td class=\'trow1\'><strong>Beschreibung</strong></td><td class=\'trow1\'><input type="text" name="art" id="art" value="{$row[\'art\']}" class="textbox" /></td></tr>
-		<tr>	<td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row[\'description_wanted\']}</textarea></td>	</tr>
-		<tr>
+            </select></td></tr>
+        <tr><td class=\'trow1\'><strong>Beschreibung</strong></td><td class=\'trow1\'><input type="text" name="art" id="art" value="{$row[\'art\']}" class="textbox" /></td></tr>
+        <tr>    <td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row[\'description_wanted\']}</textarea></td>    </tr>
+        <tr>
 <td align="center" colspan=\'2\'><input type="submit" name="rela_edit" value="editieren" id="submit" class="button"></td></tr></form></table>
-	  </form>'),
+      </form>'),
         'sid' => '-1',
         'version' => '',
         'dateline' => TIME_NOW
@@ -243,24 +262,24 @@ function relationen_install()
         'title' => 'relationen_bit_profil_edit_npc',
         'template' => $db->escape_string('<form method="post" action=""  enctype="multipart/form-data"><input type=\'hidden\' value=\'{$row[\'rid\']}\' name=\'getrid\'><input type=\'hidden\' value=\'{$row[\'anfrager\']}\' name=\'anfrager\'> 
 <table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 50%; margin:auto;">
-	<tr><td class=\'trow1\' align=\'center\' colspan=\'2\'><h3>Editieren für <b>{$npc_name[\'username\']}</b></h3></td></tr>
-	<tr>		<td class=\'trow1\'><strong>NPC Name</strong></td>
-	  <td class=\'trow1\'>
-		<input type="text" name="chara_name" id="chara_name" value="{$npc_name[\'username\']}" class="textbox" /></td></tr>
-<tr>		<td class=\'trow1\'><strong>NPC Uid (sollte 0 stehen)</strong></td>
-	  <td class=\'trow1\'>
+    <tr><td class=\'trow1\' align=\'center\' colspan=\'2\'><h3>Editieren für <b>{$npc_name[\'username\']}</b></h3></td></tr>
+    <tr>        <td class=\'trow1\'><strong>NPC Name</strong></td>
+      <td class=\'trow1\'>
+        <input type="text" name="chara_name" id="chara_name" value="{$npc_name[\'username\']}" class="textbox" /></td></tr>
+<tr>        <td class=\'trow1\'><strong>NPC Uid (sollte 0 stehen)</strong></td>
+      <td class=\'trow1\'>
 <input type=\'text\' value=\'{$row[\'angefragte\']}\' name=\'angefragte\' class="textbox"></td></tr>
-	<tr><td class=\'trow1\'><strong>Relation</strong></td>
-			<td class=\'trow1\'><select name="kat">
+    <tr><td class=\'trow1\'><strong>Relation</strong></td>
+            <td class=\'trow1\'><select name="kat">
   {$rela_select_edit}
-			</select></td></tr>
-		<tr><td class=\'trow1\'><strong>Beschreibung</strong></td><td class=\'trow1\'><input type="text" name="art" id="art" value="{$row[\'art\']}" class="textbox" /></td></tr>
-	  		<tr><td class=\'trow1\'><strong>Shortfacts</strong></td><td class=\'trow1\'><input type="text" name="shortfacts" id="shortfacts" value="{$row[\'shortfacts\']}" class="textbox" /></td></tr>
-	  		<tr><td class=\'trow1\'><strong>Gesuchlink</strong></td><td class=\'trow1\'><input type="text" name="npc_wanted" id="npc_wanted" value="{$row[\'npc_wanted\']}" class="textbox" /></td></tr>
-	<tr>	<td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row[\'description_wanted\']}</textarea></td>	</tr>
-	  <tr>
+            </select></td></tr>
+        <tr><td class=\'trow1\'><strong>Beschreibung</strong></td><td class=\'trow1\'><input type="text" name="art" id="art" value="{$row[\'art\']}" class="textbox" /></td></tr>
+              <tr><td class=\'trow1\'><strong>Shortfacts</strong></td><td class=\'trow1\'><input type="text" name="shortfacts" id="shortfacts" value="{$row[\'shortfacts\']}" class="textbox" /></td></tr>
+              <tr><td class=\'trow1\'><strong>Gesuchlink</strong></td><td class=\'trow1\'><input type="text" name="npc_wanted" id="npc_wanted" value="{$row[\'npc_wanted\']}" class="textbox" /></td></tr>
+    <tr>    <td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row[\'description_wanted\']}</textarea></td>    </tr>
+      <tr>
 <td align="center" colspan=\'2\'><input type="submit" name="npc_edit" value="editieren" id="submit" class="button"></td></tr></form></table>
-	  </form>'),
+      </form>'),
         'sid' => '-1',
         'version' => '',
         'dateline' => TIME_NOW
@@ -269,14 +288,14 @@ function relationen_install()
     $insert_array = array(
         'title' => 'relationen_formular',
         'template' => $db->escape_string('<table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 50%; margin:auto;">
-	<form id="relationen" method="post" action="member.php?action=profile&uid={$memprofile[\'uid\']}">
-	<tr><td class=\'trow1\'><strong>Relationsart</strong></td><td class=\'trow1\'><strong>Bezeichnung</strong></td>
-	</tr>
-		<tr><td class=\'trow1\'><select name="kat">
+    <form id="relationen" method="post" action="member.php?action=profile&uid={$memprofile[\'uid\']}">
+    <tr><td class=\'trow1\'><strong>Relationsart</strong></td><td class=\'trow1\'><strong>Bezeichnung</strong></td>
+    </tr>
+        <tr><td class=\'trow1\'><select name="kat">
 {$rela_select}
-	</select></td><td class=\'trow1\'><input type="text" name="art" id="art" value="" class="textbox" /></td></tr>
-		<tr>	<td class=\'trow1\' colspan="2"><strong>Beziehungstext</strong></td></tr>
-		<tr><td class=\'trow1\' align="center" colspan="2"><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">Beschreibe hier kurz die Beziehung zwischen {$memprofile[\'username\']} und dir.</textarea></td>	</tr>
+    </select></td><td class=\'trow1\'><input type="text" name="art" id="art" value="" class="textbox" /></td></tr>
+        <tr>    <td class=\'trow1\' colspan="2"><strong>Beziehungstext</strong></td></tr>
+        <tr><td class=\'trow1\' align="center" colspan="2"><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">Beschreibe hier kurz die Beziehung zwischen {$memprofile[\'username\']} und dir.</textarea></td>    </tr>
 <tr><td colspan="2" align="center"><input type="submit" name="add" value="eintragen" id="submit" class="button"></td></tr></form></table>'),
         'sid' => '-1',
         'version' => '',
@@ -287,21 +306,21 @@ function relationen_install()
     $insert_array = array(
         'title' => 'relationen_formular_npc',
         'template' => $db->escape_string('<table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 80%; margin:auto;">
-	<form id="relationen" method="post" action="member.php?action=profile&uid={$memprofile[\'uid\']}"  enctype="multipart/form-data">
-		<tr><td class=\'trow1\'><strong>NPC Name</strong></td><td class=\'trow1\'><strong>Relation</strong></td>
-		</tr>
-		<tr>
-						<td class=\'trow1\'><input type="text" name="chara_name" id="chara_name" placeholder="Vorname Nachname" class="textbox"  style="width: 200px;" /></td>
-	<td class=\'trow1\'><select name="kat">
+    <form id="relationen" method="post" action="member.php?action=profile&uid={$memprofile[\'uid\']}"  enctype="multipart/form-data">
+        <tr><td class=\'trow1\'><strong>NPC Name</strong></td><td class=\'trow1\'><strong>Relation</strong></td>
+        </tr>
+        <tr>
+                        <td class=\'trow1\'><input type="text" name="chara_name" id="chara_name" placeholder="Vorname Nachname" class="textbox"  style="width: 200px;" /></td>
+    <td class=\'trow1\'><select name="kat">
 {$rela_select}
-	</select></td></tr>
-		<tr>
-	<td class=\'trow1\'><strong>Art der Relation</strong></td><td class=\'trow1\'><strong>Shortfacts</strong></td>
-			</tr>
-	<tr>	<td class=\'trow1\'><input type="text" name="art" id="art" placeholder="Mutter, Vater, beste Freunde, Feinde etc." class="textbox" style="width: 200px;"  /></td>
-	<td class=\'trow1\'><input type="text" name="shortfacts" id="shortfacts" placeholder="xx Jahre # Beruf/Haus # Blutstatus" class="textbox" style="width: 200px;" /></td>	</tr>
-				<tr>	<td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><strong>Ein Gesuch vorhanden?</strong></td></tr>
-		<td class=\'trow1\' align="center"><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">Beschreibe hier kurz die Beziehung zwischen {$memprofile[\'username\']} und den NPC.</textarea></td>	<td class=\'trow1\' align="center"><input type="text" name="npc_wanted" id="npc_wanted" placeholder="https://" class="textbox" style="width: 80%;" /></td>		</tr>
+    </select></td></tr>
+        <tr>
+    <td class=\'trow1\'><strong>Art der Relation</strong></td><td class=\'trow1\'><strong>Shortfacts</strong></td>
+            </tr>
+    <tr>    <td class=\'trow1\'><input type="text" name="art" id="art" placeholder="Mutter, Vater, beste Freunde, Feinde etc." class="textbox" style="width: 200px;"  /></td>
+    <td class=\'trow1\'><input type="text" name="shortfacts" id="shortfacts" placeholder="xx Jahre # Beruf/Haus # Blutstatus" class="textbox" style="width: 200px;" /></td>    </tr>
+                <tr>    <td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><strong>Ein Gesuch vorhanden?</strong></td></tr>
+        <td class=\'trow1\' align="center"><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">Beschreibe hier kurz die Beziehung zwischen {$memprofile[\'username\']} und den NPC.</textarea></td>    <td class=\'trow1\' align="center"><input type="text" name="npc_wanted" id="npc_wanted" placeholder="https://" class="textbox" style="width: 80%;" /></td>        </tr>
 <tr>
 <td align="center" colspan="2" class="trow2"><input type="submit" name="npc_add" value="eintragen" id="submit" class="button"></td></tr></form></table>'),
         'sid' => '-1',
@@ -316,8 +335,8 @@ function relationen_install()
 <tr><td class="trow" colspan="2" align="center"><div class="rela_facts">{$shortfacts}</div></td></tr>
 <tr class=\'relas_td\'><td width=\'15%\' align=\'center\'>{$rel_avatar}</td>
 <td align=\'center\' width=\'75%\'>
-	<div class="smalltext" style="height: 65px; overflow: auto; padding: 0 3px; text-align: justify;">{$rela_desc}</div>
-	<div class="rela_facts">{$npc_wanted} {$delete} {$edit}<div class="modal" id="edit_{$row[\'rid\']}" style="display: none;">{$edit_rela}</div></div>	</td>
+    <div class="smalltext" style="height: 65px; overflow: auto; padding: 0 3px; text-align: justify;">{$rela_desc}</div>
+    <div class="rela_facts">{$npc_wanted} {$delete} {$edit}<div class="modal" id="edit_{$row[\'rid\']}" style="display: none;">{$edit_rela}</div></div>    </td>
 </tr>'),
         'sid' => '-1',
         'version' => '',
@@ -331,13 +350,13 @@ function relationen_install()
         'tid' => 1,
         'attachedto' => '',
         "stylesheet" =>    '.profil_flex{
-display: flex;	
+display: flex;    
 flex-wrap: wrap;
 }
 .relaname {
     font-size: 13px;
     text-transform: uppercase;
-	color: #fff;
+    color: #fff;
     text-align: center;
 }
 
@@ -353,24 +372,24 @@ margin: 5px;
 
 .relas_td img{
 width: 100px;
-	height: auto;
+    height: auto;
 }
 
 .relas_innerbox{
 height: 300px; 
-	overflow: auto	
+    overflow: auto    
 }
 .relation{
 height: 200px; 
-overflow: auto; 	
+overflow: auto;     
 }
 
 .relakat{
-	background: #0066a2 url(images/thead.png) top left repeat-x;
-	color: #ffffff;
-	border-bottom: 1px solid #263c30;
-	padding: 8px;
-	font-weight: bold;
+    background: #0066a2 url(images/thead.png) top left repeat-x;
+    color: #ffffff;
+    border-bottom: 1px solid #263c30;
+    padding: 8px;
+    font-weight: bold;
 }
 
 .rela_facts{
@@ -707,18 +726,18 @@ function profile_relation(){
         $desc = $mybb->input['description_wanted'];
         $kat = $mybb->input['kat'];
         $art = $mybb->input['art'];
-        $npc_wanted = $mybb->input['npc_wanted'];
         $shortfacts = $mybb->input['shortfacts'];
+        $npc_wanted = "";
 
 
         if ($mybb->user['uid'] == $memprofile['uid'] && $anfrager != 0) {
             //Wenn Angefragter editiert
             $select = $db->query("SELECT *
-		 FROM " . TABLE_PREFIX . "relationen r
-		LEFT JOIN " . TABLE_PREFIX . "users u
-		ON r.angefragte = u.uid
-		WHERE r.rid = '" . $getrid . "'
-		");
+         FROM " . TABLE_PREFIX . "relationen r
+        LEFT JOIN " . TABLE_PREFIX . "users u
+        ON r.angefragte = u.uid
+        WHERE r.rid = '" . $getrid . "'
+        ");
             $row = $db->fetch_array($select);
 
             $pm_change = array(
@@ -743,11 +762,11 @@ function profile_relation(){
         if ($angefragte == $row['angefragte'] && $angefragte != '0') {
             //Wenn der Angefragte editiert
             $select = $db->query("SELECT *
-		 FROM " . TABLE_PREFIX . "relationen r
-		LEFT JOIN " . TABLE_PREFIX . "users u
-		ON r.anfrager = u.uid
-		WHERE r.rid = '" . $getrid . "'
-		");
+         FROM " . TABLE_PREFIX . "relationen r
+        LEFT JOIN " . TABLE_PREFIX . "users u
+        ON r.anfrager = u.uid
+        WHERE r.rid = '" . $getrid . "'
+        ");
             $row = $db->fetch_array($select);
             $pm_change = array(
                 "subject" => "Relation geändert",
@@ -773,7 +792,7 @@ function profile_relation(){
             "angefragte" => $db->escape_string($angefragte),
             "kat" => $db->escape_string($kat),
             "art" => $db->escape_string($art),
-            "description_wanted" =>$db->escape_string($desc),
+            "description_wanted" => $db->escape_string($desc),
             "shortfacts" => $db->escape_string($shortfacts),
             "npc_wanted" => $db->escape_string($npc_wanted)
         );
