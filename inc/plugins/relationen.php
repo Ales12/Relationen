@@ -85,9 +85,11 @@ function relationen_install()
     //Templates
     $insert_array = array(
         'title' => 'relationen',
-        'template' => $db->escape_string('<table width="100%"><tr><td class=\'thead\'><h1>Beziehungskiste</h1></td></tr>
-	<tr><td class="trow1">
+        'template' => $db->escape_string('<table width="100%"><tr><td class=\'tcat\'><strong>Beziehungskiste</strong></td></tr>
+	<tr><td class="trow1"><details>
+		<summary>Relationsformular ausklappen</summary>
 {$relationen_formular}
+		</details>
 </td></tr>
 <tr><td><div class="profil_flex">
 	{$relationen_bit_profil}
@@ -100,11 +102,42 @@ function relationen_install()
     $db->insert_query("templates", $insert_array);
 
     $insert_array = array(
+        'title' => 'relationen_alert_other',
+        'template' => $db->escape_string('<div class="pm_alert">
+  Du hast aktuell  <strong>{$count} {$anfrage}</strong> bei <a id="switch_{$alert2[\'uid\']}" href="#switch" class="switchlink">{$user}</a> offen.
+</div>
+<br />'),
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+
+    $insert_array = array(
         'title' => 'relationen_alert',
         'template' => $db->escape_string('<div class="pm_alert">
   Du hast aktuell  <strong>{$count} {$anfrage}</strong> offen. <b><a href="usercp.php?action=relationen">Hier</a></b> kannst du sie bearbeiten.
 </div>
 <br />'),
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+
+    $insert_array = array(
+        'title' => 'relationen_anfragen_back',
+        'template' => $db->escape_string('<form method="post" action=""><input type="hidden" value="{$row["rid"]}" name="getrid"><input type="hidden" value="{$row["angefragte"]}" name="anfrager"><input type="hidden" value="{$row["anfrager"]}" name="angefragte">
+<table border="0" cellspacing="5" cellpadding="{$theme["tablespace"]}" class="tborder" style="width: 400px; margin:auto;">
+	<tr><td class="trow1" align="center" colspan="2"><h3>Ebenfalls eintragen von <b>{$row["username"]}</b></h3></td></tr>
+	<tr>	<td class="trow1"><strong>Relation</strong></td>	<td class="trow1"><select name="kat">
+  {$rela_select_edit}
+			</select></td></tr>
+		<tr><td class="trow1"><strong>Beschreibung</strong></td><td class="trow1"><input type="text" name="art" id="art" value="{$row["art"]}" class="textbox" /></td></tr>
+		<tr>	<td class="trow1" ><strong>Beziehungstext</strong></td><td class="trow1"><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">{$row["description_wanted"]}</textarea></td>	</tr>
+		<tr>
+<td align="center" colspan="2"><input type="submit" name="double" value="ebenfalls Eintragen" id="submit" class="button"></td></tr></form></table>
+	  </form>'),
         'sid' => '-1',
         'version' => '',
         'dateline' => TIME_NOW
@@ -125,7 +158,7 @@ function relationen_install()
 
 <td valign="top">
 	<table border="0" cellspacing="{$theme[\'borderwidth\']}" cellpadding="{$theme[\'tablespace\']}" class="tborder">
-		<tr><td class="thead"><strong>Offene Relationsanfragen</strong></td>
+		<tr><td class="thead"><h1>Offene Relationsanfragen</h1></td>
 		</tr>	<tr><td align="center">
 		<table width="90%" style="margin: auto;">
 			<tr><td class="thead" colspan="4"><strong>Deine eingegangen Anfragen</strong></td></tr>
@@ -137,7 +170,7 @@ function relationen_install()
 		</table><br />
 		</td>
 		</tr>
-		<tr><td class="thead"><strong>Eingetragene Relationsanfragen</strong></td></tr>
+		<tr><td class="thead"><h1>Eingetragene Relationsanfragen</h1></td></tr>
 			<tr><td><table width="90%" style="margin: auto;">	
 		
 		<tr><td class="thead" colspan="4"><strong>Hier bist du eingetragen</strong></td></tr>
@@ -461,7 +494,7 @@ function profile_relation(){
     //Bei dem Angefragt wird
     $angefragte = $memprofile['uid'];
 
-    $username = $mybb->user['username'];
+    $username = $mybb->memprofile['username'];
 
     $rela_cat = $mybb->settings['relation_category'];
 
@@ -513,7 +546,7 @@ function profile_relation(){
             $username= $_POST['chara_name'];
             $kat = $_POST['kat'];
             $art = $_POST['art'];
-            $shortfacts = $_POST['shortfacts'];
+            $shortfacts = $_POST['age']." # ".$_POST['work']." # ".$_POST['relation'];
             $npc_wanted = $_POST['npc_wanted'];
             $desc = $_POST['description_wanted'];
             $ok = 1;
@@ -617,7 +650,6 @@ function profile_relation(){
                     eval("\$edit_rela = \"" . $templates->get("relationen_bit_profil_edit_npc") . "\";");
                 }
             } else{
-
                 $username = format_name($row['username'], $row['usergroup'], $row['displaygroup']);
                 $user = build_profile_link($username, $row['uid']);
                 if ($row['birthday']) {
@@ -829,8 +861,8 @@ function global_relation_alert(){
         $alert2 = $db->fetch_array($select_alert);
         $count = mysqli_num_rows($select_alert);
 
-        $username = format_name($alert2['username'], $alert2['usergroup'], $alert2['displaygroup']);
-        $user = build_profile_link($username, $alert2['uid']);
+        $user = format_name($alert2['username'], $alert2['usergroup'], $alert2['displaygroup']);
+
 
         if ($mybb->user['uid'] != 0) {
             if ($count == '1') {
@@ -903,22 +935,9 @@ function usercp_relation(){
             while ($row = $db->fetch_array($select)) {
                 $username = format_name($row['username'], $row['usergroup'], $row['displaygroup']);
                 $user = build_profile_link($username, $row['uid']);
-                $optionen = " <a href='usercp.php?action=relationen&ok=$row[rid]'><i class=\"fa fa-check\" aria-hidden=\"true\"></i> Annehmen</a><br />
-                               <a href='usercp.php?action=relationen&del=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Löschen</a>";
+                $optionen = "<div> <a href='usercp.php?action=relationen&ok=$row[rid]'><i class=\"fa fa-check\" aria-hidden=\"true\"></i></a></div>
+                   <div></div><a href='usercp.php?action=relationen&del=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\"></i></a></";
 
-                if ($row['kat'] == 'familie') {
-                    $row['kat'] = "Familie";
-                } elseif ($row['kat'] == 'freunde') {
-                    $row['kat'] = "Freunde";
-                } elseif ($row['kat'] == 'bekannte') {
-                    $row['kat'] = "Bekannte";
-                } elseif ($row['kat'] == 'liebe') {
-                    $row['kat'] = "Liebe";
-                } elseif ($row['kat'] == 'feinde') {
-                    $row['kat'] = "Feinde";
-                } elseif ($row['kat'] == 'vergangen') {
-                    $row['kat'] = "Vergangenheit";
-                }
 
                 eval("\$anfragen_bit .= \"" . $templates->get("relationen_anfragen_bit") . "\";");
             }
@@ -941,22 +960,9 @@ function usercp_relation(){
             while ($row = $db->fetch_array($select)) {
                 $username = format_name($row['username'], $row['usergroup'], $row['displaygroup']);
                 $user = build_profile_link($username, $row['uid']);
-                $optionen = "<a href='usercp.php?action=relationen&del=$row[rid]'><i class=\"fas fa-undo\"></i> Zurückziehen</a>";
+                $optionen = "<div><a href='usercp.php?action=relationen&del=$row[rid]' title='Eintrag löschen'><i class=\"fas fa-undo\"></i></a></div>";
 
 
-                if ($row['kat'] == 'familie') {
-                    $row['kat'] = "Familie";
-                } elseif ($row['kat'] == 'freunde') {
-                    $row['kat'] = "Freunde";
-                } elseif ($row['kat'] == 'bekannte') {
-                    $row['kat'] = "Bekannte";
-                } elseif ($row['kat'] == 'liebe') {
-                    $row['kat'] = "Liebe";
-                } elseif ($row['kat'] == 'feinde') {
-                    $row['kat'] = "Feinde";
-                } elseif ($row['kat'] == 'vergangen') {
-                    $row['kat'] = "Vergangenheit";
-                }
 
                 eval("\$deine_anfragen .= \"" . $templates->get("relationen_anfragen_bit") . "\";");
             }
@@ -979,22 +985,9 @@ function usercp_relation(){
         while($row = $db->fetch_array($all_relas_query)){
             $username = format_name($row['username'], $row['usergroup'], $row['displaygroup']);
             $user = build_profile_link($username, $row['uid']);
-            $optionen = "<a onclick=\"$('#double_{$row['rid']}').modal({ fadeDuration: 250, keepelement: true, zIndex: (typeof modal_zindex !== 'undefined' ? modal_zindex : 9999) }); return false;\" style=\"cursor: pointer;\"><i class=\"fas fa-undo\"></i> Ebenfalls eintragen</a> <br />
-<a href='usercp.php?action=relationen&olddel=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Löschen</a>";
+            $optionen = "<div><a onclick=\"$('#double_{$row['rid']}').modal({ fadeDuration: 250, keepelement: true, zIndex: (typeof modal_zindex !== 'undefined' ? modal_zindex : 9999) }); return false;\" style=\"cursor: pointer;\"><i class=\"fas fa-undo\" title='Ebenfalls eintragen'></i></a> </div>
+<div><a href='usercp.php?action=relationen&olddel=$row[rid]' title='Eintrag löschen'><i class=\"fa fa-times\" aria-hidden=\"true\"></i></a></div>";
 
-            if ($row['kat'] == 'familie') {
-                $row['kat'] = "Familie";
-            } elseif ($row['kat'] == 'freunde') {
-                $row['kat'] = "Freunde";
-            } elseif ($row['kat'] == 'bekannte') {
-                $row['kat'] = "Bekannte";
-            } elseif ($row['kat'] == 'liebe') {
-                $row['kat'] = "Liebe";
-            } elseif ($row['kat'] == 'feinde') {
-                $row['kat'] = "Feinde";
-            } elseif ($row['kat'] == 'vergangen') {
-                $row['kat'] = "Vergangenheit";
-            }
 
             $rela_cat = $mybb->settings['relation_category'];
 
@@ -1033,22 +1026,8 @@ function usercp_relation(){
                 $user = build_profile_link($username, $row['uid']);
             }
 
-            $optionen = "<a href='usercp.php?action=relationen&olddel=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Löschen</a>";
+            $optionen = "<div><a href='usercp.php?action=relationen&olddel=$row[rid]'><i class=\"fa fa-times\" aria-hidden=\"true\" title='Eintrag löschen'></i></a></div>";
 
-
-            if ($row['kat'] == 'familie') {
-                $row['kat'] = "Familie";
-            } elseif ($row['kat'] == 'freunde') {
-                $row['kat'] = "Freunde";
-            } elseif ($row['kat'] == 'bekannte') {
-                $row['kat'] = "Bekannte";
-            } elseif ($row['kat'] == 'liebe') {
-                $row['kat'] = "Liebe";
-            } elseif ($row['kat'] == 'feinde') {
-                $row['kat'] = "Feinde";
-            } elseif ($row['kat'] == 'vergangen') {
-                $row['kat'] = "Vergangenheit";
-            }
 
             eval("\$all_own_relas .= \"" . $templates->get("relationen_anfragen_bit") . "\";");
         }
