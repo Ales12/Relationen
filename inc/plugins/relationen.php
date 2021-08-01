@@ -307,7 +307,7 @@ function relationen_install()
         'title' => 'relationen_formular_npc',
         'template' => $db->escape_string('<table border="0" cellspacing="5" cellpadding="{$theme[\'tablespace\']}" class="tborder" style="width: 80%; margin:auto;">
 	<form id="relationen" method="post" action="member.php?action=profile&uid={$memprofile[\'uid\']}"  enctype="multipart/form-data">
-		<tr><td class=\'trow1\'><strong>NPC Name</strong></td><td class=\'trow1\'><strong>Relation</strong></td>
+		<tr><td class=\'trow1\'><div class="widefakt">NPC Name</div></td><td class=\'trow1\'><div class="widefakt">Relationkategorie</div></td>
 		</tr>
 		<tr>
 						<td class=\'trow1\'><input type="text" name="chara_name" id="chara_name" placeholder="Vorname Nachname" class="textbox"  style="width: 200px;" /></td>
@@ -315,12 +315,20 @@ function relationen_install()
 {$rela_select}
 	</select></td></tr>
 		<tr>
-	<td class=\'trow1\'><strong>Art der Relation</strong></td><td class=\'trow1\'><strong>Shortfacts</strong></td>
+	<td class=\'trow1\'><div class="widefakt">Beziehung</div>
+			<div class="smalltext">In welche Beziehung stehen die Charaktere zueinander? Mutter, Vater, beste Freudne etc?</td><td class=\'trow1\'><div class="widefakt">Shortfacts</div>
+			<div class="smalltext">Füge wie folgt die Shortfacts ein. Das Alter mit <b>xx Jahre</b>, dann der Beruf bzw. Schule und dann welche Beziehungsstatus der Charakter hat, wie z.B. Single, Verliebt, in einer Beziehung, Geschieden etc.</div></td>
 			</tr>
 	<tr>	<td class=\'trow1\'><input type="text" name="art" id="art" placeholder="Mutter, Vater, beste Freunde, Feinde etc." class="textbox" style="width: 200px;"  /></td>
-	<td class=\'trow1\'><input type="text" name="shortfacts" id="shortfacts" placeholder="xx Jahre # Beruf/Haus # Blutstatus" class="textbox" style="width: 200px;" /></td>	</tr>
-				<tr>	<td class=\'trow1\' ><strong>Beziehungstext</strong></td><td class=\'trow1\'><strong>Ein Gesuch vorhanden?</strong></td></tr>
-		<td class=\'trow1\' align="center"><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%">Beschreibe hier kurz die Beziehung zwischen {$memprofile[\'username\']} und den NPC.</textarea></td>	<td class=\'trow1\' align="center"><input type="text" name="npc_wanted" id="npc_wanted" placeholder="https://" class="textbox" style="width: 80%;" /></td>		</tr>
+	<td class=\'trow1\'><input type="text" name="age" id="age" placeholder="xx Jahre" class="textbox" style="width: 100px;" />
+		<input type="text" name="work" id="work" placeholder="Beruf/Schule" class="textbox" style="width: 100px;" />
+		<input type="text" name="relation" id="relation" placeholder="Beziehungsstatus (Single, Verlobt, in einer Beziehung etc.)" class="textbox" style="width: 100px;" />
+		</td>	</tr>
+		
+				<tr>	<td class=\'trow1\' ><div class="widefakt">Beziehungstext</div>
+					<div class="smalltext">Beschreibe hier kurz die Beziehung zwischen {$memprofile[\'username\']} und den NPC.</div></td><td class=\'trow1\'><div class="widefakt">Ein Gesuch vorhanden?</div>
+					<div class="smalltext">Füge hier nur den Link zum Gesuche ein.</div></td></tr>
+		<td class=\'trow1\'><textarea class="textarea" name="description_wanted" id="description_wanted" rows="5" cols="15" style="width: 80%"></textarea></td>	<td class=\'trow1\' valign="top"><input type="text" name="npc_wanted" id="npc_wanted" placeholder="https://" class="textbox" style="width: 80%;" /></td>		</tr>
 <tr>
 <td align="center" colspan="2" class="trow2"><input type="submit" name="npc_add" value="eintragen" id="submit" class="button"></td></tr></form></table>'),
         'sid' => '-1',
@@ -659,7 +667,7 @@ function profile_relation(){
                 }
 
                 //Shortfacts kannst du hier eingeben. Hierzu kannst du jegliche Profilfelder in der form $row['fidxx'] einfügen.
-                $shortfacts = $age." Jahre # ".$row['job']." # ".$row['fid27'];
+                $shortfacts = $age." Jahre # ".$row['job']." # ".$row['fidxx'];
 
                 if($mybb->user['uid'] != 0) {
                     if (!empty($row['avatar'])) {
