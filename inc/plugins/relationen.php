@@ -654,12 +654,48 @@ function profile_relation(){
             } else{
                 $username = format_name($row['username'], $row['usergroup'], $row['displaygroup']);
                 $user = build_profile_link($username, $row['uid']);
-                if ($row['birthday']) {
-                    $age = intval(date('Y', strtotime("1." . $mybb->settings['minica_month'] . "." . $mybb->settings['minica_year'] . "") - strtotime($row['birthday']))) - 1970;
-                } else {
-                    $age = "k/A";
+    $chara = intval($row['uid']);
+                $ip_inplay_id = $mybb->settings['ip_inplay_id'];
+                $archiv_id = $mybb->settings['ip_archive_id'];
+
+//Geburtstage
+                $all_months = $mybb->settings['inplaykalender_months'];
+                $year = $mybb->settings['inplaykalender_year'];
+                //wir wollen nur den letzten Monat
+
+                $month = strrpos($all_months, ',') + 1;
+                $month = substr($all_months, $month); //$last_word = PHP.
+
+                $monatsnamen = array(
+                    1 => "Januar",
+                    2 => "Februar",
+                    3 => "Maerz",
+                    4 => "April",
+                    5 => "Mai",
+                    6 => "Juni",
+                    7 => "Juli",
+                    8 => "August",
+                    9 => "September",
+                    10 => "Oktober",
+                    11 => "November",
+                    12 => "Dezember"
+                );
+                //wir wollen den Namen zu einer Zahl umwandeln
+                $month_int = array_search($month, $monatsnamen);
+
+                //Jetzt wollen wir eine Variable im Datumsformat
+                $ingame = new DateTime("01-" . $month_int . "-" . $year);
+
+                //Geburtstag des Users bekommen
+                $gebu = $db->query("SELECT birthday FROM ".TABLE_PREFIX."users WHERE uid =$chara");
+                while ($data = $db->fetch_array($gebu)) {
+                    //datumsformat:
+                    $geburtstag = new DateTime($data['birthday']);
                 }
 
+
+                $interval = $ingame->diff($geburtstag);
+                $age = $interval->format("%Y Jahre");
                 //Shortfacts kannst du hier eingeben. Hierzu kannst du jegliche Profilfelder in der form $row['fidxx'] einfügen.
                 $shortfacts = $age." Jahre # ".$row['job']." # ".$row['fid27'];
 
@@ -728,63 +764,6 @@ function profile_relation(){
         $art = $mybb->input['art'];
         $shortfacts = $mybb->input['shortfacts'];
         $npc_wanted = "";
-
-
-        if ($mybb->user['uid'] == $memprofile['uid'] && $anfrager != 0) {
-            //Wenn Angefragter editiert
-            $select = $db->query("SELECT *
-         FROM " . TABLE_PREFIX . "relationen r
-        LEFT JOIN " . TABLE_PREFIX . "users u
-        ON r.angefragte = u.uid
-        WHERE r.rid = '" . $getrid . "'
-        ");
-            $row = $db->fetch_array($select);
-
-            $pm_change = array(
-                "subject" => "Relation geändert",
-                "message" => "Liebe/r {$row['username']}, <br /> ich habe die Relation bei mir geändert. Schau bitte, ob das für dich in Ordnung ist.",
-                //to: wer muss die anfrage bestätigen
-                "fromid" => $anfrager,
-                //from: wer hat die anfrage gestellt
-                "toid" => $angefragte
-            );
-            // $pmhandler->admin_override = true;
-            $pmhandler->set_data($pm_change);
-            if (!$pmhandler->validate_pm())
-                return false;
-            else {
-                $pmhandler->insert_pm();
-            }
-
-        }
-
-
-        if ($angefragte == $row['angefragte'] && $angefragte != '0') {
-            //Wenn der Angefragte editiert
-            $select = $db->query("SELECT *
-         FROM " . TABLE_PREFIX . "relationen r
-        LEFT JOIN " . TABLE_PREFIX . "users u
-        ON r.anfrager = u.uid
-        WHERE r.rid = '" . $getrid . "'
-        ");
-            $row = $db->fetch_array($select);
-            $pm_change = array(
-                "subject" => "Relation geändert",
-                "message" => "Liebe/r {$row['username']}, <br /> ich habe die Relation bei dir geändert. Bitte schau nach, ob sie für dich in Ordnung ist. ",
-                //to: wer muss die anfrage bestätigen
-                "fromid" => $anfrager,
-                //from: wer hat die anfrage gestellt
-                "toid" => $angefragte
-            );
-            // $pmhandler->admin_override = true;
-            $pmhandler->set_data($pm_change);
-            if (!$pmhandler->validate_pm())
-                return false;
-            else {
-                $pmhandler->insert_pm();
-            }
-        }
-
 
 
         $edit_record = array(
